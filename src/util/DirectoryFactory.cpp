@@ -29,17 +29,26 @@ char DirectoryFactory::get_path_delim()
 #endif
 }
 
-std::string DirectoryFactory::get_soda_dir()
+std::string DirectoryFactory::get_soda_dir(bool use_test_dir)
 {
+    if (use_test_dir)
+        return DirectoryFactory::build_path_from_home({ "soda-test" });
+
     return DirectoryFactory::build_path_from_home({ "soda" });
 }
 
-std::string DirectoryFactory::get_database_dir(const std::string& database_name)
+std::string DirectoryFactory::get_database_dir(const std::string& database_name, bool use_test_dir)
 {
+    if (use_test_dir)
+        return DirectoryFactory::build_path_from_home({ "soda-test", database_name });
+
     return DirectoryFactory::build_path_from_home({ "soda", database_name });
 }
 
-std::string DirectoryFactory::get_repository_dir(const std::string& database_name, const std::string& repository_name)
+std::string DirectoryFactory::get_repository_dir(const std::string& database_name, const std::string& repository_name, bool use_test_dir)
 {
+    if (use_test_dir)
+        return DirectoryFactory::build_path_from_home({ "soda-test", database_name, repository_name });
+
     return DirectoryFactory::build_path_from_home({ "soda", database_name, repository_name });
 }
