@@ -1,4 +1,6 @@
 file(GLOB_RECURSE UTIL_SRC util/*.cpp)
 file(GLOB_RECURSE CORE_SRC core/*.cpp)
-add_library(soda ${UTIL_SRC} ${CORE_SRC})
+file(GLOB_RECURSE DATA_SRC data/*.cpp)
+file(GLOB_RECURSE ENUMS_SRC enums/*.cpp)
+add_library(soda ${UTIL_SRC} ${CORE_SRC} ${DATA_SRC} ${ENUMS_SRC})
 target_include_directories(soda PUBLIC ${PROJECT_SOURCE_DIR}/include)
