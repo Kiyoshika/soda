@@ -12,6 +12,9 @@ General todo items, in no particular order
 * Throw exception when adding field with existing name
 * Add a test to check for duplicate field names
 
+## Repository API
+* Implement remaining repository API functions
+
 ## CreateRepositoryTest
 * Replace ifstream read with `Schema::parse()` and `Schema::to_string()` for validating schema content
 
