@@ -16,3 +16,8 @@ std::string TestDirectoryFactory::get_repository_dir(const std::string& database
 {
     return DirectoryFactory::get_repository_dir(database_name, repository_name, true);
 }
+
+std::string TestDirectoryFactory::get_schema_path(const std::string& database_name, const std::string& repository_name)
+{
+    return DirectoryFactory::get_schema_path(database_name, repository_name, true);
+}

@@ -1,0 +1,4 @@
+add_executable(CreateRepositoryTest CreateRepositoryTest.cpp)
+target_include_directories(CreateRepositoryTest PUBLIC ${PROJECT_SOURCE_DIR}/include)
+target_link_libraries(CreateRepositoryTest soda)
+add_test(NAME CreateRepositoryTest COMMAND CreateRepositoryTest)
