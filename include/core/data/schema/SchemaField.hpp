@@ -24,7 +24,7 @@ public:
         bool is_nullable);
 
     const std::string& get_name() const noexcept;
-    const EDataType get_type() const noexcept;
+    EDataType get_type() const noexcept;
     bool is_nullable() const noexcept;
     std::string to_string() const noexcept;
 

@@ -1,5 +1,5 @@
 #include "core/api/database/Database.hpp"
-#include "core/api/database/DatabaseExceptions.hpp"
+#include "core/api/database/Exceptions.hpp"
 #include "util/DirectoryFactory.hpp"
 #include <cassert>
 #include <iostream>

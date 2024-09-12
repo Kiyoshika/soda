@@ -1,5 +1,5 @@
 #include "core/api/database/Database.hpp"
-#include "core/api/database/DatabaseExceptions.hpp"
+#include "core/api/database/Exceptions.hpp"
 
 using namespace soda::util;
 using namespace soda::core::api::database;
