@@ -21,7 +21,7 @@ int main()
         std::cerr << "Expected to throw exception for bad schema name.\n";
         return -1;
     }
-    catch (const InvalidSchemaNameException& ex) {}
+    catch (const InvalidSchemaFieldNameException& ex) {}
     catch (const std::exception& ex)
     {
         std::cerr << "Expected different exception to be thrown.\n";

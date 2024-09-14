@@ -1,9 +1,6 @@
 # TODO
 General todo items, in no particular order
 
-## SchemaField
-* Add `parse()` method in `SchemaField` to build a SchemaField from a string
-
 ## Schema
 * Add `from_file()` method in parse schema from file
 * Add `rename_field()` method to rename a field
@@ -14,6 +11,7 @@ General todo items, in no particular order
 
 ## Repository API
 * Implement remaining repository API functions
+* When schema is created, create the page0.txt with metadata (and a PageMetadata structure with parser/to_string etc)
 
 ## CreateRepositoryTest
 * Replace ifstream read with `Schema::parse()` and `Schema::to_string()` for validating schema content
@@ -23,3 +21,10 @@ General todo items, in no particular order
 
 ## CreateRepositoryTest
 * Finish remaining tests
+
+## SchemaFieldTest
+* Add tests on new parse() method to check for all nullable and non-nullable types
+
+## EDataTypeTest
+* Add tests on converting from and to string/enum types
+	* Exceptions are thrown if a str->enum or enum->str mapping is not found in vector tuple

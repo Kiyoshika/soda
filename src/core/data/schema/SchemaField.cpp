@@ -17,7 +17,7 @@ SchemaField::SchemaField(
     m_is_nullable = is_nullable;
 
     if (!validate_name())
-        throw InvalidSchemaNameException(name);
+        throw InvalidSchemaFieldNameException(name);
 }
 
 const std::string& SchemaField::get_name() const noexcept
@@ -46,5 +46,40 @@ std::string SchemaField::to_string() const noexcept
 
 bool SchemaField::validate_name() const noexcept
 {
-    return StringValidator::validate_alphanumeric(get_name(), {'-', '_'});
+    return StringValidator::validate_alphanumeric(get_name(), {'_'});
+}
+
+void SchemaField::parse(const std::string& str)
+{
+    if (str.empty())
+        throw InvalidSchemaFieldFormatException();
+
+    // split the string on the first ':'
+    std::string key;
+    std::string value;
+    for (std::size_t i = 0; i < str.length(); ++i)
+    {
+        if (str[i] == ':' && i < str.length() - 1)
+        {
+            value = str.substr(i + 1);
+            break;
+        }
+
+        key += str[i];
+    }
+
+    if (key.empty() || value.empty())
+        throw InvalidSchemaFieldFormatException();
+
+    if (!validate_name())
+        throw InvalidSchemaFieldNameException(key);
+
+    m_name = key;
+
+    m_is_nullable = value[value.length() - 1] == '?';
+
+    if (m_is_nullable)
+        m_type = EDataTypeUtil::from_string(value.substr(0, value.length() - 1));
+    else
+        m_type = EDataTypeUtil::from_string(value);
 }
