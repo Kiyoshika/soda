@@ -1,6 +1,9 @@
 #include "core/api/database/Database.hpp"
 #include "core/api/database/Exceptions.hpp"
 #include "util/DirectoryFactory.hpp"
+
+#include "TestUtil.hpp"
+
 #include <cassert>
 #include <iostream>
 
@@ -18,8 +21,7 @@ int main()
     teardown();
 
     // ATTEMPT TO DROP VALID DATABASE
-    try
-    {
+    ASSERT_NO_EXCEPTION({
         teardown();
         Database::create("mydb");
         Database::drop("mydb");
@@ -29,29 +31,14 @@ int main()
             teardown();
             return -1;
         }
-    }
-    catch (const std::exception& ex) {
-        std::cerr << ex.what();
-        teardown();
-        return -1;
-    }
+    });
 
     // ATTEMPT TO DROP INVALID DATABASE
-    try
-    {
+    ASSERT_EXCEPTION(DatabaseNotFoundException, {
         teardown();
         Database::drop("blah");
-        std::cerr << "Expected exception when dropping 'blah'.\n";
         teardown();
-        return -1;
-    }
-    catch (const DatabaseNotFoundException& ex) { (void)ex; }
-    catch (const std::exception& ex)
-    {
-        std::cerr << "Unexpected exception:\n" << ex.what();
-        teardown();
-        return -1;
-    }
+    });
 
     teardown();
     return 0;

@@ -18,6 +18,8 @@ private:
     // shorten for convenience
     typedef ::soda::core::enums::EDataType EDataType;
 public:
+    SchemaField() = default;
+
     SchemaField(
         const std::string& name,
         EDataType type,

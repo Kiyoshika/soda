@@ -3,6 +3,8 @@
 #include "core/enums/EDataType.hpp"
 #include "util/StringValidator.hpp"
 
+#include <algorithm>
+
 using namespace soda::core::data::schema;
 using namespace soda::core::enums;
 using namespace soda::util;
@@ -12,7 +14,10 @@ SchemaField::SchemaField(
     EDataType type,
     bool is_nullable)
 {
-    m_name = name;
+    std::string name_lower = name;
+    std::transform(name_lower.begin(), name_lower.end(), name_lower.begin(), ::tolower);
+
+    m_name = name_lower;
     m_type = type;
     m_is_nullable = is_nullable;
 
@@ -51,30 +56,33 @@ bool SchemaField::validate_name() const noexcept
 
 void SchemaField::parse(const std::string& str)
 {
-    if (str.empty())
+    // create a lowercase copy of str
+    std::string lower_str = str;
+    std::transform(lower_str.begin(), lower_str.end(), lower_str.begin(), ::tolower);
+
+    if (lower_str.empty())
         throw InvalidSchemaFieldFormatException();
 
     // split the string on the first ':'
     std::string key;
     std::string value;
-    for (std::size_t i = 0; i < str.length(); ++i)
+    for (std::size_t i = 0; i < lower_str.length(); ++i)
     {
-        if (str[i] == ':' && i < str.length() - 1)
+        if (lower_str[i] == ':' && i < lower_str.length() - 1)
         {
-            value = str.substr(i + 1);
+            value = lower_str.substr(i + 1);
             break;
         }
 
-        key += str[i];
+        key += lower_str[i];
     }
 
     if (key.empty() || value.empty())
         throw InvalidSchemaFieldFormatException();
 
+    m_name = key;
     if (!validate_name())
         throw InvalidSchemaFieldNameException(key);
-
-    m_name = key;
 
     m_is_nullable = value[value.length() - 1] == '?';
 

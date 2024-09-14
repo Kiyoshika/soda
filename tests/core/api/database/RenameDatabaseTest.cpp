@@ -1,6 +1,9 @@
 #include "core/api/database/Database.hpp"
 #include "core/api/database/Exceptions.hpp"
 #include "util/DirectoryFactory.hpp"
+
+#include "TestUtil.hpp"
+
 #include <cassert>
 #include <iostream>
 
@@ -18,8 +21,7 @@ int main()
     teardown();
 
     // ATTEMPT TO RENAME VALID DATABASE
-    try
-    {
+    ASSERT_NO_EXCEPTION({
         teardown();
         TestDatabase::create("db1");
         TestDatabase::rename("db1", "db2");
@@ -36,50 +38,24 @@ int main()
             teardown();
             return -1;
         }
-    }
-    catch (const std::exception& ex)
-    {
-        std::cerr << ex.what();
-        teardown();
-        return -1;
-    }
+    });
 
     // ATTEMPT TO RENAME EXISTING DATABASE
-    try
-    {
+    ASSERT_EXCEPTION(DatabaseAlreadyExistsException, {
         teardown();
         TestDatabase::create("db1");
         TestDatabase::create("db2");
         TestDatabase::rename("db1", "db2");
-        std::cerr << "Expected exception when renaming 'db1' to existing database 'db2'.\n";
         teardown();
-        return -1;
-    }
-    catch (const DatabaseAlreadyExistsException& ex) { (void)ex; }
-    catch (const std::exception& ex)
-    {
-        std::cerr << "Unexpected exception:\n" << ex.what();
-        teardown();
-        return -1;
-    }
+    });
 
     // ATTEMPT TO RENAME BAD DATABASE
-    try
-    {
+    ASSERT_EXCEPTION(InvalidDatabaseNameException, {
         teardown();
         TestDatabase::create("db1");
         TestDatabase::rename("db1", "bad..name");
-        std::cerr << "Expected exception when renaming 'db1' to 'bad..name'.\n";
         teardown();
-        return -1;
-    }
-    catch (const InvalidDatabaseNameException& ex) { (void)ex; }
-    catch (const std::exception& ex)
-    {
-        std::cerr << "Unexpected exception:\n" << ex.what();
-        teardown();
-        return -1;
-    }
+    });
 
     teardown();
     return 0;

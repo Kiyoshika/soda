@@ -14,17 +14,15 @@ General todo items, in no particular order
 * When schema is created, create the page0.txt with metadata (and a PageMetadata structure with parser/to_string etc)
 
 ## CreateRepositoryTest
-* Replace ifstream read with `Schema::parse()` and `Schema::to_string()` for validating schema content
+* Replace ifstream read with `Schema::from_file()` and `Schema::to_string()` for validating schema content
+* Finish remaining tests
 
 ## DirectoryFactory
 * Add a static constant for the main and test database path instead of hard coding it everywhere
 
-## CreateRepositoryTest
-* Finish remaining tests
-
-## SchemaFieldTest
-* Add tests on new parse() method to check for all nullable and non-nullable types
-
 ## EDataTypeTest
 * Add tests on converting from and to string/enum types
 	* Exceptions are thrown if a str->enum or enum->str mapping is not found in vector tuple
+
+## EDataType
+* Add a `TIME` data type
