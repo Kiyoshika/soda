@@ -18,6 +18,8 @@ private:
     // shorten for convenience
     typedef ::soda::core::enums::EDataType EDataType;
 public:
+    SchemaField() = default;
+
     SchemaField(
         const std::string& name,
         EDataType type,
@@ -26,6 +28,9 @@ public:
     const std::string& get_name() const noexcept;
     EDataType get_type() const noexcept;
     bool is_nullable() const noexcept;
+
+    void parse(const std::string& str);
+
     std::string to_string() const noexcept;
 
 
@@ -35,6 +40,7 @@ private:
     bool m_is_nullable;
 private:
     bool validate_name() const noexcept;
+    bool validate_type_name(const std::string& type) const noexcept;
 };
 }
 }

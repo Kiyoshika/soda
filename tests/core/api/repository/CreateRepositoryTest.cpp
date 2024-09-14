@@ -11,6 +11,8 @@
 
 #include "util/DirectoryFactory.hpp"
 
+#include "TestUtil.hpp"
+
 #include <cassert>
 #include <iostream>
 #include <fstream>
@@ -31,30 +33,20 @@ int main()
     TestDatabase::create("testdb");
 
     // CREATE REPO WITHOUT EXISTING DB
-    try
-    {
+    ASSERT_EXCEPTION(DatabaseNotFoundException, {
         TestRepository::create("mydb", "myrepo", schema);
-        std::cerr << "Expected exception to be thrown when creating schema without existing db.\n";
-        return -1;
-    }
-    catch (const DatabaseNotFoundException& ex) {}
-    catch (const std::exception& ex)
-    {
-        std::cerr << "Excepted to throw different exception.\n";
-        return -1;
-    }
+    });
 
     // CREATE REPO WITH VALID DB
-    try
-    {
+    ASSERT_NO_EXCEPTION({
         TestRepository::create("testdb", "myrepo", schema);
         assert(std::filesystem::is_directory(DirectoryFactory::build_path_from_home({ "soda-test", "testdb", "myrepo" })) == true);
 
         std::string schema_path = DirectoryFactory::build_path_from_home({ "soda-test", "testdb", "myrepo", "schema.txt" }, false);
         assert(std::filesystem::exists(schema_path) == true);
 
+        // TODO: replace this raw read with Schema.from_file() and .to_string() to validate
         std::ifstream schema_file(schema_path);
-        // TODO: replace this raw read with Schema.parse() and .to_string() to validate
         if (!schema_file.is_open())
         {
             std::cerr << "Couldn't open schema file '" << schema_path << "'.\n";
@@ -67,15 +59,11 @@ int main()
         schema_file.close();
 
         assert(schema_content == "name:string\nname2:int32?\n");
-    }
-    catch (const std::exception& ex)
-    {
-        std::cerr << "Received exception while creating repo in valid db: " << ex.what() << "\n";
-        return -1;
-    }
+    });
 
-    std::cerr << "FINISH THE OTHER TESTS!\n";
+    std::cerr << "FINISH REMAINING TESTS\n";
     return -1;
+
     // CREATE REPO WITH INVALID NAME
 
     // CREATE DUPLICATE REPO NAME IN SAME DB
