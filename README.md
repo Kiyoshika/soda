@@ -5,7 +5,7 @@ Instead of storing data as rows and columns, data is stored as general "objects"
 
 Objects can be "joined" which will concatenate their properties together or there can be dependencies defined which will create nested objects (i.e., an object's property can be another object.)
 
-For more information, see the [design](#DESIGN.md) doc.
+For more information, see the [design](DESIGN.md) doc.
 
 ## Building
 This is a standard CMake project. You can configure the following CMake flags when building:
