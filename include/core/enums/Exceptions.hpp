@@ -19,7 +19,7 @@ struct InvalidTypeNameException : public std::runtime_error
 
 struct UnmappedTypeException : public std::runtime_error
 {
-    UnmappedTypeException(core::enums::EDataType type)
+    UnmappedTypeException()
         : std::runtime_error("EDataType value is not mapped to a string.") {}
 };
 }

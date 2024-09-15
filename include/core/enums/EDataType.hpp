@@ -3,6 +3,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <tuple>
 
 namespace soda
 {
@@ -33,7 +34,7 @@ public:
     static std::string to_string(EDataType type);
     static EDataType from_string(const std::string& str);
 private:
-    static std::vector<std::tuple<std::string, EDataType>> m_str_type_pairs;
+    static const std::vector<std::tuple<std::string, EDataType>> m_str_type_pairs;
 };
 }
 }
