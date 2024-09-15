@@ -46,7 +46,14 @@ struct SchemaFieldNameNotFoundException : public std::runtime_error
     SchemaFieldNameNotFoundException(const std::string& name)
         : std::runtime_error("SchemaField name '" + name + "' not found.") {}
 };
+
+struct SchemaIOException : public std::runtime_error
+{
+    SchemaIOException(const std::string& path)
+        : std::runtime_error("Problem with Schema reading/writing to path: " + path) {}
+};
 }
 }
 }
 }
+

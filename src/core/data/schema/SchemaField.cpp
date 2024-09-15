@@ -96,12 +96,12 @@ void SchemaField::set_name(const std::string& name)
         throw InvalidSchemaFieldNameException(name_lower);
 }
 
-void SchemaField::set_type(EDataType type) const noexcept
+void SchemaField::set_type(EDataType type) noexcept
 {
     m_type = type;
 }
 
-void SchemaField::set_nullable(bool is_nullable) const noexcept
+void SchemaField::set_nullable(bool is_nullable) noexcept
 {
     m_is_nullable = is_nullable;
 }

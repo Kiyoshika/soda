@@ -28,11 +28,11 @@ public:
     void set_name(const std::string& name);
 
     EDataType get_type() const noexcept;
-    void set_type(EDataType type) const noexcept;
+    void set_type(EDataType type) noexcept;
 
 
     bool is_nullable() const noexcept;
-    void set_nullable(bool is_nullable) const noexcept;
+    void set_nullable(bool is_nullable) noexcept;
 
     void parse(const std::string& str);
 
