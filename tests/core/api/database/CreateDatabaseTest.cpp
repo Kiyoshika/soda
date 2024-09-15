@@ -7,16 +7,10 @@
 #include <cassert>
 #include <iostream>
 
+using namespace soda::tests;
 using namespace soda::util;
 using namespace soda::core::api::database;
 
-static void teardown()
-{
-    try
-    {
-        std::filesystem::remove_all(TestDirectoryFactory::get_soda_dir());
-    } catch (const std::exception& ex) {}
-}
 
 int main()
 {

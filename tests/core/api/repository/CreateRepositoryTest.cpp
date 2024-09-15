@@ -18,6 +18,7 @@
 #include <fstream>
 #include <sstream>
 
+using namespace soda::tests;
 using namespace soda::core::data::schema;
 using namespace soda::core::api::repository;
 using namespace soda::core::api::database;
@@ -26,6 +27,8 @@ using namespace soda::util;
 
 int main()
 {
+    teardown();
+
     Schema schema;
     schema.add_field(SchemaField("name", EDataType::STRING, false));
     schema.add_field(SchemaField("name2", EDataType::INT32, true));

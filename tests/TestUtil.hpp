@@ -4,7 +4,14 @@
 #include <stdexcept>
 #include <functional>
 #include <iostream>
+#include <filesystem>
 
+#include "util/DirectoryFactory.hpp"
+
+namespace soda
+{
+namespace tests
+{
 #define ASSERT_EXCEPTION(expected_exception, test_body){ \
     try { \
         test_body \
@@ -30,3 +37,12 @@
     } \
 }
 
+void teardown()
+{
+    try
+    {
+        std::filesystem::remove_all(soda::util::TestDirectoryFactory::get_soda_dir());
+    } catch (const std::exception& ex) {}
+}
+}
+}

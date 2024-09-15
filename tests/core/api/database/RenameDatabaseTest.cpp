@@ -7,13 +7,9 @@
 #include <cassert>
 #include <iostream>
 
+using namespace soda::tests;
 using namespace soda::util;
 using namespace soda::core::api::database;
-
-static void teardown()
-{
-    std::filesystem::remove_all(TestDirectoryFactory::get_soda_dir());
-}
 
 int main()
 {
