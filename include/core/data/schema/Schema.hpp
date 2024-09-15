@@ -23,10 +23,12 @@ private:
     typedef ::soda::core::enums::EDataType EDataType;
 public:
     Schema() = default;
-    void add_field(const SchemaField& field) noexcept;
+    void add_field(const SchemaField& field);
     void rename_field(const std::string& old_name, const std::string& new_name);
     void change_type(const std::string& field_name, EDataType new_type);
     void remove_field(const std::string& name);
+
+    const SchemaField& get_field(const std::string& field_name);
 
     void from_file(const std::string& path);
     void to_file(const std::string& path);
@@ -35,7 +37,7 @@ public:
 private:
     std::vector<SchemaField> m_fields;
 private:
-    SchemaField* get_field(const std::string& field_name) noexcept;
+    SchemaField* _get_field(const std::string& field_name) noexcept;
 };
 }
 }

@@ -6,18 +6,22 @@
 using namespace soda::core::data::schema;
 using namespace soda::core::enums;
 
-void Schema::add_field(const SchemaField& field) noexcept
+void Schema::add_field(const SchemaField& field)
 {
+    SchemaField* find_field = _get_field(field.get_name());
+    if (find_field)
+        throw SchemaFieldNameAlreadyExistsException(field.get_name());
+
     m_fields.push_back(field);
 }
 
 void Schema::rename_field(const std::string& old_name, const std::string& new_name)
 {
-    SchemaField* field = get_field(new_name);
+    SchemaField* field = _get_field(new_name);
     if (field)
         throw SchemaFieldNameAlreadyExistsException(new_name);
 
-    field = get_field(old_name);
+    field = _get_field(old_name);
     if (!field)
         throw SchemaFieldNameNotFoundException(old_name);
 
@@ -26,7 +30,7 @@ void Schema::rename_field(const std::string& old_name, const std::string& new_na
 
 void Schema::change_type(const std::string& field_name, EDataType new_type)
 {
-    SchemaField* field = get_field(field_name);
+    SchemaField* field = _get_field(field_name);
     if (!field)
         throw SchemaFieldNameNotFoundException(field_name);
 
@@ -35,7 +39,7 @@ void Schema::change_type(const std::string& field_name, EDataType new_type)
 
 void Schema::remove_field(const std::string& name)
 {
-    SchemaField* field = get_field(name);
+    SchemaField* field = _get_field(name);
     if (!field)
         throw SchemaFieldNameNotFoundException(name);
 
@@ -48,6 +52,8 @@ void Schema::from_file(const std::string& path)
     std::ifstream file(path);
     if (!file.is_open())
         throw SchemaIOException(path);
+
+    m_fields.clear();
 
     std::string current_line;
     while (std::getline(file, current_line))
@@ -83,13 +89,26 @@ void Schema::to_file(const std::string& path)
 std::string Schema::to_string() const noexcept
 {
     std::string str;
-    for (const SchemaField& field : m_fields)
-        str += field.to_string() + "\n";
+    for (std::size_t i = 0; i < m_fields.size(); ++i)
+    {
+        str += m_fields[i].to_string();
+        if (i < m_fields.size() - 1)
+            str += '\n';
+    }
 
     return str;
 }
 
-SchemaField* Schema::get_field(const std::string& field_name) noexcept
+const SchemaField& Schema::get_field(const std::string& field_name)
+{
+    for (const auto& field : m_fields)
+        if (field.get_name() == field_name)
+            return field;
+
+    throw SchemaFieldNameNotFoundException(field_name);
+}
+
+SchemaField* Schema::_get_field(const std::string& field_name) noexcept
 {
     for (auto& field : m_fields)
         if (field.get_name() == field_name)

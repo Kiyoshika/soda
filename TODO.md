@@ -1,19 +1,13 @@
 # TODO
 General todo items, in no particular order
 
-## SchemaTest
-* Implement tests for new Schema methods
-
 ## Repository API
 * Implement remaining repository API functions
 * When schema is created, create the page0.txt with metadata (and a PageMetadata structure with `parser`/`to_string` etc)
 
-## CreateRepositoryTest
-* Replace ifstream read with `Schema::from_file()` and `Schema::to_string()` for validating schema content
-* Finish remaining tests
-
 ## DirectoryFactory
 * Add a static constant for the main and test database path instead of hard coding it everywhere
+* Add `build_dir_path_from_home` and `build_file_path_from_home` to avoid passing the booleans in `build_path_from_home` to make it more clear
 
 ## EDataTypeTest
 * Add tests on converting from and to string/enum types

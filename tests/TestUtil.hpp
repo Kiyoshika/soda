@@ -13,6 +13,7 @@
     } \
     catch (const expected_exception& ex) {} \
     catch (const std::exception& ex) { \
+        std::cerr << "Around line: " << __LINE__ << "\n"; \
         std::cerr << "Incorrect exception caught. Expected '" << #expected_exception << "' to be thrown.\nException message: " << ex.what(); \
         return -1; \
     } \
@@ -23,6 +24,7 @@
         test_body \
     } \
     catch (const std::exception& ex) { \
+        std::cerr << "Around line: " << __LINE__ << "\n"; \
         std::cerr << "Was not expecting exception to be thrown.\nException message: " << ex.what(); \
         return -1; \
     } \

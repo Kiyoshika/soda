@@ -31,6 +31,7 @@ int main()
     schema.add_field(SchemaField("name2", EDataType::INT32, true));
 
     TestDatabase::create("testdb");
+    TestDatabase::create("testdb-2");
 
     // CREATE REPO WITHOUT EXISTING DB
     ASSERT_EXCEPTION(DatabaseNotFoundException, {
@@ -38,37 +39,37 @@ int main()
     });
 
     // CREATE REPO WITH VALID DB
+    std::string schema_path;
     ASSERT_NO_EXCEPTION({
         TestRepository::create("testdb", "myrepo", schema);
         assert(std::filesystem::is_directory(DirectoryFactory::build_path_from_home({ "soda-test", "testdb", "myrepo" })) == true);
 
-        std::string schema_path = DirectoryFactory::build_path_from_home({ "soda-test", "testdb", "myrepo", "schema.txt" }, false);
+        schema_path = DirectoryFactory::build_path_from_home({ "soda-test", "testdb", "myrepo", "schema.txt" }, false);
         assert(std::filesystem::exists(schema_path) == true);
-
-        // TODO: replace this raw read with Schema.from_file() and .to_string() to validate
-        std::ifstream schema_file(schema_path);
-        if (!schema_file.is_open())
-        {
-            std::cerr << "Couldn't open schema file '" << schema_path << "'.\n";
-            return -1;
-        }
-        std::stringstream schema_stream;
-        schema_stream << schema_file.rdbuf();
-        std::string schema_content = schema_stream.str();
-
-        schema_file.close();
-
-        assert(schema_content == "name:string\nname2:int32?\n");
     });
 
-    std::cerr << "FINISH REMAINING TESTS\n";
-    return -1;
+    // READ CREATED SCHEMA FROM API
+    ASSERT_NO_EXCEPTION({
+        Schema read;
+        read.from_file(schema_path);
+        assert(read.to_string() == "name:string\nname2:int32?");
+    });
 
     // CREATE REPO WITH INVALID NAME
+    ASSERT_EXCEPTION(InvalidRepositoryNameException, {
+        TestRepository::create("testdb", "bad..name", schema);
+    });
 
-    // CREATE DUPLICATE REPO NAME IN SAME DB
+    // CREATE REPO WITH EXISTING NAME
+    ASSERT_EXCEPTION(RepositoryAlreadyExistsException, {
+        TestRepository::create("testdb", "myrepo", schema);
+    });
+
 
     // CREATE SAME REPO NAME IN SEPARATE DBs
+    ASSERT_NO_EXCEPTION({
+        TestRepository::create("testdb-2", "myrepo", schema);
+    });
 
     return 0;
 }

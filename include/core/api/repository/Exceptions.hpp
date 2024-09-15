@@ -24,6 +24,18 @@ struct RepositoryIOException : public std::runtime_error
     RepositoryIOException(const std::string& repository_path)
         : std::runtime_error("Problem writing to repository path: " + repository_path) {}
 };
+
+struct InvalidRepositoryNameException : public std::runtime_error
+{
+    InvalidRepositoryNameException(const std::string& name)
+        : std::runtime_error("Repository name '" + name + "' is invalid. Name must be only alphanumeric characters, '-', or '_'.") {}
+};
+
+struct RepositoryNotFoundException : public std::runtime_error
+{
+    RepositoryNotFoundException(const std::string& name)
+        : std::runtime_error("Repository '" + name + "' not found.") {}
+};
 }
 }
 }

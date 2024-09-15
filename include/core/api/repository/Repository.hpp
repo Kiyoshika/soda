@@ -37,6 +37,8 @@ public:
         const std::string& old_repository_name,
         const std::string& new_repository_name,
         bool use_test_dir);
+private:
+    static bool validate_name(const std::string& repository_name) noexcept;
 };
 
 class TestRepository
