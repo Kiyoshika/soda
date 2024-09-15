@@ -15,7 +15,6 @@ namespace schema
 class SchemaField
 {
 private:
-    // shorten for convenience
     typedef ::soda::core::enums::EDataType EDataType;
 public:
     SchemaField() = default;
@@ -26,8 +25,14 @@ public:
         bool is_nullable);
 
     const std::string& get_name() const noexcept;
+    void set_name(const std::string& name);
+
     EDataType get_type() const noexcept;
+    void set_type(EDataType type) noexcept;
+
+
     bool is_nullable() const noexcept;
+    void set_nullable(bool is_nullable) noexcept;
 
     void parse(const std::string& str);
 
