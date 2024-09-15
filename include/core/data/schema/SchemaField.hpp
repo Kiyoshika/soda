@@ -44,7 +44,7 @@ private:
     EDataType m_type;
     bool m_is_nullable;
 private:
-    bool validate_name() const noexcept;
+    bool validate_name(const std::string& name) const noexcept;
     bool validate_type_name(const std::string& type) const noexcept;
 };
 }

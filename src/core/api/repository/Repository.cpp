@@ -2,6 +2,7 @@
 #include "core/api/repository/Exceptions.hpp"
 #include "core/api/database//Exceptions.hpp"
 #include "util/DirectoryFactory.hpp"
+#include "util/StringValidator.hpp"
 
 using namespace soda::core::api::database;
 using namespace soda::core::api::repository;
@@ -21,6 +22,9 @@ void Repository::create(
     if (std::filesystem::exists(repo_path))
         throw RepositoryAlreadyExistsException(database_name, repository_name);
 
+    if (!Repository::validate_name(repository_name))
+        throw InvalidRepositoryNameException(repository_name);
+
     std::filesystem::create_directories(repo_path);
 
     std::string schema_path = DirectoryFactory::get_schema_path(database_name, repository_name, use_test_dir);
@@ -30,4 +34,9 @@ void Repository::create(
 
     schema_file << schema.to_string();
     schema_file.close();
+}
+
+bool Repository::validate_name(const std::string& repository_name) noexcept
+{
+    return StringValidator::validate_alphanumeric(repository_name, { '-', '_' });    
 }

@@ -43,9 +43,9 @@ std::string SchemaField::to_string() const noexcept
     return str;
 }
 
-bool SchemaField::validate_name() const noexcept
+bool SchemaField::validate_name(const std::string& name) const noexcept
 {
-    return StringValidator::validate_alphanumeric(get_name(), {'_'});
+    return StringValidator::validate_alphanumeric(name, {'_'});
 }
 
 void SchemaField::parse(const std::string& str)
@@ -74,9 +74,10 @@ void SchemaField::parse(const std::string& str)
     if (key.empty() || value.empty())
         throw InvalidSchemaFieldFormatException();
 
-    m_name = key;
-    if (!validate_name())
+    if (!validate_name(key))
         throw InvalidSchemaFieldNameException(key);
+
+    m_name = key;
 
     m_is_nullable = value[value.length() - 1] == '?';
 
@@ -91,9 +92,10 @@ void SchemaField::set_name(const std::string& name)
     std::string name_lower = name;
     std::transform(name_lower.begin(), name_lower.end(), name_lower.begin(), ::tolower);
 
-    m_name = name_lower;
-    if (!validate_name())
+    if (!validate_name(name_lower))
         throw InvalidSchemaFieldNameException(name_lower);
+
+    m_name = name_lower;
 }
 
 void SchemaField::set_type(EDataType type) noexcept
