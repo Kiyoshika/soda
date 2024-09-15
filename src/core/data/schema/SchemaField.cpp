@@ -14,15 +14,9 @@ SchemaField::SchemaField(
     EDataType type,
     bool is_nullable)
 {
-    std::string name_lower = name;
-    std::transform(name_lower.begin(), name_lower.end(), name_lower.begin(), ::tolower);
-
-    m_name = name_lower;
+    set_name(name);
     m_type = type;
     m_is_nullable = is_nullable;
-
-    if (!validate_name())
-        throw InvalidSchemaFieldNameException(name);
 }
 
 const std::string& SchemaField::get_name() const noexcept
@@ -90,4 +84,24 @@ void SchemaField::parse(const std::string& str)
         m_type = EDataTypeUtil::from_string(value.substr(0, value.length() - 1));
     else
         m_type = EDataTypeUtil::from_string(value);
+}
+
+void SchemaField::set_name(const std::string& name)
+{
+    std::string name_lower = name;
+    std::transform(name_lower.begin(), name_lower.end(), name_lower.begin(), ::tolower);
+
+    m_name = name_lower;
+    if (!validate_name())
+        throw InvalidSchemaFieldNameException(name_lower);
+}
+
+void SchemaField::set_type(EDataType type) const noexcept
+{
+    m_type = type;
+}
+
+void SchemaField::set_nullable(bool is_nullable) const noexcept
+{
+    m_is_nullable = is_nullable;
 }
