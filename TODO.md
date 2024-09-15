@@ -15,3 +15,5 @@ General todo items, in no particular order
 
 ## EDataType
 * Add a `TIME` data type
+* Add support for array types, e.g., `int32[]` (can also be nullable)
+* Add support for custom/object types (e.g., the type is another object - this will be handled much later, though)
