@@ -3,3 +3,15 @@ target_include_directories(CreateRepositoryTest PUBLIC ${PROJECT_SOURCE_DIR}/inc
 target_include_directories(CreateRepositoryTest PUBLIC ${PROJECT_SOURCE_DIR}/tests)
 target_link_libraries(CreateRepositoryTest soda)
 add_test(NAME CreateRepositoryTest COMMAND CreateRepositoryTest)
+
+add_executable(DropRepositoryTest DropRepositoryTest.cpp)
+target_include_directories(DropRepositoryTest PUBLIC ${PROJECT_SOURCE_DIR}/include)
+target_include_directories(DropRepositoryTest PUBLIC ${PROJECT_SOURCE_DIR}/tests)
+target_link_libraries(DropRepositoryTest soda)
+add_test(NAME DropRepositoryTest COMMAND DropRepositoryTest)
+
+add_executable(RenameRepositoryTest RenameRepositoryTest.cpp)
+target_include_directories(RenameRepositoryTest PUBLIC ${PROJECT_SOURCE_DIR}/include)
+target_include_directories(RenameRepositoryTest PUBLIC ${PROJECT_SOURCE_DIR}/tests)
+target_link_libraries(RenameRepositoryTest soda)
+add_test(NAME RenameRepositoryTest COMMAND RenameRepositoryTest)

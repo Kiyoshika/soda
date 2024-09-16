@@ -37,6 +37,11 @@ public:
         const std::string& old_repository_name,
         const std::string& new_repository_name,
         bool use_test_dir);
+
+    static bool check_exists(
+        const std::string& database_name,
+        const std::string& repository_name,
+        bool use_test_dir) noexcept;
 private:
     static bool validate_name(const std::string& repository_name) noexcept;
 };

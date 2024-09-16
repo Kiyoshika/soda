@@ -16,7 +16,7 @@ void TestRepository::drop(
     const std::string& database_name,
     const std::string& repository_name)
 {
-    //return Repository::drop(database_name, repository_name, true);
+    return Repository::drop(database_name, repository_name, true);
 }
 
 void TestRepository::rename(
@@ -24,5 +24,5 @@ void TestRepository::rename(
     const std::string& old_repository_name,
     const std::string& new_repository_name)
 {
-    //return Repository::rename(database_name, old_repository_name, new_repository_name, true);
+    return Repository::rename(database_name, old_repository_name, new_repository_name, true);
 }
