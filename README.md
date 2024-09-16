@@ -8,7 +8,7 @@ Objects can be "joined" which will concatenate their properties together or ther
 For more information, see the [design](DESIGN.md) doc.
 
 ## Components
-There are the major components that make up this database (some are not yet implemented):
+These are the major components that make up this database (some are not yet implemented):
 
 ### API
 This is the communication layer that allows interaction with the underlying filesystem.
