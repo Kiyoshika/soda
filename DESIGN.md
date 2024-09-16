@@ -20,7 +20,7 @@ age:uint8
 
 Some example records:
 ```
-// ~/soda/mydb/repositories/person/page0.txt
+// ~/soda/mydb/repositories/person/content.txt
 rows:3,nextid:4,relationships:
 _id:1,name:"zach",age:25
 _id:2,name:"josh",age:30
@@ -32,11 +32,11 @@ Every repository contains some basic metadata at the top of the file:
 * `nextid` stores the next unique ID for a new record
 * `relationships` a (possibly empty) pipe `|` delimited list of repositories that are a dependency to this repository
 
-Every record starts with an `_id` field which is a `uint64` to uniquely identify a record. In the (very) rare event that `nextid` equals `2^64 - 1`, all IDs will be "rebalanced" starting from `1` ordered up to `10000` or however many rows are present in the page. If the records contain dependencies on other repositories, those will be searched so the ID can be updated in the other repositories as well to maintain the proper mapping.
+Every record starts with an `_id` field which is a `uint64` to uniquely identify a record. In the (very) rare event that `nextid` equals `2^64 - 1`, all IDs will be "rebalanced" starting from `1`. If the records contain dependencies on other repositories, those will be searched so the ID can be updated in the other repositories as well to maintain the proper mapping.
 
-Data in repository is organized by pages. Each page holds a maximum of 10000 rows. The top of each page contains metadata about the number of rows. Ideally, this data should be compressed due to many repeated values for the keys.
+Data in repository is stored in a single file. The top of each page contains metadata about the number of rows. Ideally, this data should be compressed due to many repeated values for the keys.
 
-By default, up to 8 pages are read at a time on 8 different threads until all pages have been visited. Change the default by setting `thread_pool_size` in the configuration.
+By default, up to `N` pages are read at a time on `N` different threads until all pages have been visited where `N` is the number of cores your machine has unless otherwise specified in configuration. Change the default by setting `thread_pool_size` in the configuration.
 
 The format of the data itself is similar to a CSV format but with key value pairs instead of raw values. This is to support arbitrary changes in the schema.
 
@@ -47,11 +47,11 @@ If we add a new field to the schema, such as `salary:double`, it will be added t
 
 ```
 // ~/soda/mydb/repositories/person/page0.txt
-rows:4
-name:"zach",age:25
-name:"josh",age:30
-name:"christopher",age:21
-name:"kyle",age:23,salary:65784.12
+rows:4,nextid:5,relationships:
+_id:1,name:"zach",age:25
+_id:2,name:"josh",age:30
+_id:3,name:"christopher",age:21
+_id:4,name:"kyle",age:23,salary:65784.12
 ```
 
 We can also update older records to add the new field if needed:
@@ -65,11 +65,11 @@ AND age = 25;
 Which will append the salary:
 ```
 // ~/soda/mydb/repositories/person/page0.txt
-rows:4
-name:"zach",age:25,salary:12345.10
-name:"josh",age:30
-name:"christopher",age:21
-name:"kyle",age:23,salary:65784.12
+rows:4,nextid:5,relationships:
+_id:1,name:"zach",age:25,salary:12345.10
+_id:2,name:"josh",age:30
+_id:3,name:"christopher",age:21
+_id:4,name:"kyle",age:23,salary:65784.12
 ```
 
 Trying to insert a field not defined in the schema results in an error:
