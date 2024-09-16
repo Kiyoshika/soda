@@ -66,6 +66,12 @@ std::vector<std::string> Database::list(bool use_test_dir)
     return database_list;
 }
 
+bool Database::check_exists(const std::string& name, bool use_test_dir) noexcept
+{
+    std::string db_path = DirectoryFactory::get_database_dir(name, use_test_dir);
+    return std::filesystem::exists(db_path);
+}
+
 bool Database::validate_name(const std::string& name) noexcept
 {
     return StringValidator::validate_alphanumeric(name, { '-', '_' });

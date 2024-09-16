@@ -21,6 +21,7 @@ struct Database
     static void drop(const std::string& name, bool use_test_dir = false);
     static void rename(const std::string& old_name, const std::string& new_name, bool use_test_dir = false);
     static std::vector<std::string> list(bool use_test_dir = false);
+    static bool check_exists(const std::string& name, bool use_test_dir) noexcept;
 private:
     static bool validate_name(const std::string& name) noexcept;
 };

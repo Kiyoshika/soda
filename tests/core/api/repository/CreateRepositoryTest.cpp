@@ -74,5 +74,7 @@ int main()
         TestRepository::create("testdb-2", "myrepo", schema);
     });
 
+    teardown();
+
     return 0;
 }

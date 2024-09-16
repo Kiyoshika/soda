@@ -2,7 +2,6 @@
 General todo items, in no particular order
 
 ## Repository API
-* Implement remaining repository API functions
 * When schema is created, create the page0.txt with metadata (and a PageMetadata structure with `parser`/`to_string` etc)
 
 ## DirectoryFactory
