@@ -32,10 +32,10 @@ std::string ContentMetadata::to_string() const noexcept
     output_ss << "nextid:" << this->get_next_id() << ",";
     output_ss << "relationships:";
     const auto& repo_names = this->get_repo_relationships();
-    for (std::size_t i = 0; i < this->get_repo_relationships().size(); ++i)
+    for (std::size_t i = 0; i < repo_names.size(); ++i)
     {
         output_ss << repo_names[i];
-        if (i < this->get_repo_relationships().size() - 1)
+        if (i < repo_names.size() - 1)
             output_ss << ",";
     }
 
