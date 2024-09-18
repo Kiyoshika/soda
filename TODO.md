@@ -2,7 +2,7 @@
 General todo items, in no particular order
 
 ## Repository API
-* When schema is created, create the page0.txt with metadata (and a PageMetadata structure with `parser`/`to_string` etc)
+* Add methods to insert/remove/edit records
 
 ## DirectoryFactory
 * Add a static constant for the main and test database path instead of hard coding it everywhere
