@@ -7,6 +7,8 @@
 #include "core/data/schema/Schema.hpp"
 #include "core/data/schema/SchemaField.hpp"
 
+#include "core/data/metadata/ContentMetadata.hpp"
+
 #include "core/enums/EDataType.hpp"
 
 #include "util/DirectoryFactory.hpp"
@@ -20,6 +22,7 @@
 
 using namespace soda::tests;
 using namespace soda::core::data::schema;
+using namespace soda::core::data::metadata;
 using namespace soda::core::api::repository;
 using namespace soda::core::api::database;
 using namespace soda::core::enums;
@@ -43,12 +46,18 @@ int main()
 
     // CREATE REPO WITH VALID DB
     std::string schema_path;
+    std::string content_path;
     ASSERT_NO_EXCEPTION({
         TestRepository::create("testdb", "myrepo", schema);
         assert(std::filesystem::is_directory(DirectoryFactory::build_path_from_home({ "soda-test", "testdb", "myrepo" })) == true);
 
         schema_path = DirectoryFactory::build_path_from_home({ "soda-test", "testdb", "myrepo", "schema.txt" }, false);
         assert(std::filesystem::exists(schema_path) == true);
+        
+        content_path = DirectoryFactory::build_path_from_home({ "soda-test", "testdb", "myrepo", "content.txt" }, false);
+        assert(std::filesystem::exists(content_path) == true);
+
+        
     });
 
     // READ CREATED SCHEMA FROM API
@@ -56,6 +65,16 @@ int main()
         Schema read;
         read.from_file(schema_path);
         assert(read.to_string() == "name:string\nname2:int32?");
+    });
+
+    // READ CONTENT METADATA AFTER SCHEMA IS SUCCESSFULLY CREATED
+    ASSERT_NO_EXCEPTION({
+        ContentMetadata metadata;
+        metadata.from_file(content_path);
+
+        assert(metadata.get_rows() == 0);
+        assert(metadata.get_next_id() == 1);
+        assert(metadata.get_repo_relationships().size() == 0);
     });
 
     // CREATE REPO WITH INVALID NAME

@@ -2,11 +2,13 @@
 #include "core/api/repository/Exceptions.hpp"
 #include "core/api/database/Database.hpp"
 #include "core/api/database/Exceptions.hpp"
+#include "core/data/metadata/ContentMetadata.hpp"
 #include "util/DirectoryFactory.hpp"
 #include "util/StringValidator.hpp"
 
 using namespace soda::core::api::database;
 using namespace soda::core::api::repository;
+using namespace soda::core::data::metadata;
 using namespace soda::util;
 
 void Repository::create(
@@ -34,6 +36,16 @@ void Repository::create(
 
     schema_file << schema.to_string();
     schema_file.close();
+
+    ContentMetadata metadata;
+
+    std::string metadata_path = DirectoryFactory::get_content_path(database_name, repository_name, use_test_dir);
+    std::ofstream content_file(metadata_path);
+    if (!content_file.is_open())
+        throw RepositoryIOException(metadata_path);
+    
+    content_file << metadata.to_string() << "\n";
+    content_file.close();
 }
 
 void Repository::drop(

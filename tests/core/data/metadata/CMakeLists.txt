@@ -1,0 +1,5 @@
+add_executable(ContentMetadataTest ContentMetadataTest.cpp)
+target_include_directories(ContentMetadataTest PUBLIC ${PROJECT_SOURCE_DIR}/include)
+target_include_directories(ContentMetadataTest PUBLIC ${PROJECT_SOURCE_DIR}/tests)
+target_link_libraries(ContentMetadataTest soda)
+add_test(NAME ContentMetadataTest COMMAND ContentMetadataTest)
